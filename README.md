@@ -1,4 +1,4 @@
-﻿**Projet java : Le jeu du plombier** 
+**Projet java : Le jeu du plombier** 
 
 L’objectif de ce projet est de réaliser en java une application répondant à un cahier des charges défini. Nous allons aborder point par point ces directives ainsi que les méthodes choisies pour les respecter. 
 
@@ -18,11 +18,7 @@ La conception à été répartie chronologiquement en trois phases :
 - L’algorithme de résolution 
 - L’interface et les fonctions utilisateur 
 
-Dans un premier temps, j’ai donc cherché à concevoir différents outils qui me permettraient plus tard d’avoir les fonctions nécessaires à la résolution du problème. C’est ainsi que j’ai commencé par concevoir une classe Tuyau, qui contient les coordonnées d’un tuyau, son type (6 Possibles), le nombres d’occurrences de test/backtrack effectuées dessus, et sa 
-
-` `[1] ![](Aspose.Words.6227c9b2-b671-405e-8202-2430d8208f71.001.png)
-
-direction de sortie (Nord,Sud,Est,Ouest). La documentation d’utilisation de cet élément sera détaillée en annexe, et également en commentaire dans la classe Tuyau. 
+Dans un premier temps, j’ai donc cherché à concevoir différents outils qui me permettraient plus tard d’avoir les fonctions nécessaires à la résolution du problème. C’est ainsi que j’ai commencé par concevoir une classe Tuyau, qui contient les coordonnées d’un tuyau, son type (6 Possibles), le nombres d’occurrences de test/backtrack effectuées dessus, et sa direction de sortie (Nord,Sud,Est,Ouest). La documentation d’utilisation de cet élément sera détaillée en annexe, et également en commentaire dans la classe Tuyau. 
 
 Pour l’empilement, la classe pile utilisée dans le programme Euler proposé en cours sera utilisée et permettra l’empilement des éléments tuyau les uns à la suite des autres. 
 
@@ -42,11 +38,7 @@ Intervient alors la programmation du backtrack. Le principe est simple, lorsque 
 
 Imaginons un tuyau sortant au nord, il est possible de le compléter avec un tuyau droit, coudé à droite ou coudé à gauche. Le programme de backtracking va tester toutes ces possibilités en enregistrant à chaque fois le nombre d’occurrences tentées (0 pour droit, 1 pour coudé droite, 2 pour coudé gauche) puis retourner d’un tuyau en arrière. 
 
-J’ai fait le choix de programmer l’interface à ce stade de la réalisation du projet. Cela me permettrait de mieux visualiser les tests, l’interface en console ayant ses limites. J’ai cependant gardé l’affichage en console, qui à l’énorme avantage de permettre d’afficher les variables au fur à mesure de la résolution, ce qui a beaucoup contribué au débogage. L’interface se compose comme précisé précédemment d’un tableau de boutons et d’une 
-
-` `[2] ![](Aspose.Words.6227c9b2-b671-405e-8202-2430d8208f71.001.png)
-
-toolbar. Le tableau permettant d’affecter à chaque bouton le même évènement tout en renvoyant les coordonnées du bouton. Lors d’une saisie sur un bouton, une variable lui correspondant prend un état différent. Le programme principal vérifie à chaque répétition de la boucle principale si ces variables changent, c’est-à-dire si l’on a pressé le bouton de réinitialisation, d’arrêt ou de démarrage, ou encore si l’on a pressé un bouton pour changer un tuyau et le prends en compte dans le programme. 
+J’ai fait le choix de programmer l’interface à ce stade de la réalisation du projet. Cela me permettrait de mieux visualiser les tests, l’interface en console ayant ses limites. J’ai cependant gardé l’affichage en console, qui à l’énorme avantage de permettre d’afficher les variables au fur à mesure de la résolution, ce qui a beaucoup contribué au débogage. L’interface se compose comme précisé précédemment d’un tableau de boutons et d’une toolbar. Le tableau permettant d’affecter à chaque bouton le même évènement tout en renvoyant les coordonnées du bouton. Lors d’une saisie sur un bouton, une variable lui correspondant prend un état différent. Le programme principal vérifie à chaque répétition de la boucle principale si ces variables changent, c’est-à-dire si l’on a pressé le bouton de réinitialisation, d’arrêt ou de démarrage, ou encore si l’on a pressé un bouton pour changer un tuyau et le prends en compte dans le programme. 
 
 Pour donner suite à ces changements, et pour implémenter l’arrêt ainsi que le démarrage du programme, qui initialement se lançait instantanément, il a fallu le revoir un petit peu. Il a donc été nécessaire d’effectuer une boucle infinie à la suite de l’initialisation du programme dans laquelle nous avons deux états, en « veille », c’est-à-dire sans l’algorithme de résolution lancé, ou le programme est simplement en attente d’ordres comme par exemple placement de la source ou encore démarrage, et en « travail », état dans lequel on cherche le meilleur chemin avec les caractéristiques initiales données. Il a également fallu empêcher les erreurs, comme le démarrage du programme alors que la source n’est pas initialisée. C’est également à ce moment que j’ai du effectuer la transition d’une source et de tuyau fixes codés en dur, et d’une source et de tuyaux fixes variables. Cela s’est accompagné d’un certain nombre de problèmes et de vérifications supplémentaires qui ont étés nécessaires pour par exemple remettre a zéro la case après 8 appuis ou encore empêcher le placement de deux sources. 
 
@@ -57,8 +49,6 @@ Par la suite, j’ai souhaité intégrer une sauvegarde du meilleur chemin trouv
 Lorsque le backtrack final est exécuté, ou que tous les tuyaux initiaux et toutes les cases sont remplies, on affiche le meilleur chemin et on stoppe l’exécution de l’algorithme pour repasser à l’état initial, en attente d’une réinitialisation et de la saisie éventuelle d’une nouvelle source.  
 
 Finalement, il a été nécessaire de tester le programme. Pour cela dans un premier temps j’ai veillé au passage de l’état veille à l’état travail, en vérifiant bien qu’il est possible de réinitialiser dans les deux cas. Il y a eu des problèmes avec la réinitialisation de la source dont il a fallu restaurer les valeurs initiales (négatives) attestant de sa désaffectation. 
-
-` `[3] ![](Aspose.Words.6227c9b2-b671-405e-8202-2430d8208f71.001.png)
 
 Pour la résolution, le programme est beaucoup plus rapide lorsqu’il n’y a pas de tuyaux initiaux, il va prendre quelques secondes. En fonction du nombre de tuyaux initiaux et de leur position, et s’il n’est pas possible de remplir tout le plateau en passant par tous les tuyaux initiaux, et donc si il n’existe pas de solution parfaite, l’algorithme va devoir exécuter toutes les possibilités, là ou il n’aurait du en temps normal trouver qu’une seule des solutions idéales possibles. Dans le cas ou tous les cas sont testés, cela prend approximativement 40 à 50 minutes. 
 
@@ -72,31 +62,9 @@ Cependant, sur le coté purement technique, j’ai trouvé le projet exigeant, c
 
 Pour finir, je pense que ce projet m’a été bénéfique et que sa difficulté a été formatrice. J’ai le sentiment d’avoir progressé, non seulement dans mes compétences en java, mais également plus globalement dans la conception d’algorithmes. 
 
-` `[4] ![](Aspose.Words.6227c9b2-b671-405e-8202-2430d8208f71.001.png)
 
 DOCUMENTATION 
 
-` `Grille de traduction de la variable « type tuyau » de la console et des fonctions : Tableau 1 
-
-
-
-|Icone ||Type |
-| - | :- | - |
-|||0 : source |
-||||
-|||1 : droit horizontal |
-||||
-|||2 : droit vertical |
-||||
-|||3 : coudé ouest-sud |
-||||
-|||4 : coudé sud-est |
-||||
-|||5 : coudé ouest-nord |
-||||
-|||6 : coudé nord-est |
-
-` `[5] ![](Aspose.Words.6227c9b2-b671-405e-8202-2430d8208f71.001.png)
 
 Grille de traduction de la variable « output » Tableau 2 
 
@@ -125,9 +93,8 @@ Tableau 3
 |4 : Ouest |||||
 ||||||
 
-` `[6] ![](Aspose.Words.6227c9b2-b671-405e-8202-2430d8208f71.001.png)
 
 Fonction Tuyau(int i, int j, int output, int tests, int type)   : 
 
 Avec i, j les coordonnées du tuyau, outuput sa direction de sortie selon le tableau 3, tests le nombre d’itérations de backtrack, et type le type du tuyau selon le tableau 1. 
-` `[7] ![](Aspose.Words.6227c9b2-b671-405e-8202-2430d8208f71.001.png)
+
